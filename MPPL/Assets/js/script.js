@@ -94,3 +94,36 @@ function intiPassword() {
     });
 }
 intiPassword();
+
+
+function aktifkanScrollHalaman(offset = 80) {
+    document.querySelectorAll('a[href^="#"]').forEach(tautan => {
+        tautan.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const idTarget = this.getAttribute('href');
+            if(idTarget === '#') return;
+
+            const elemenTarget = document.querySelector(idTarget);
+            if(elemenTarget) {
+                // Tutup navbar di versi mobile jika terbuka
+                const tombolNavbar = document.querySelector('.navbar-toggler');
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+
+                if(navbarCollapse && navbarCollapse.classList.contains('show')) {
+                    tombolNavbar.click();
+                }
+
+                window.scrollTo({
+                    top: elemenTarget.offsetTop - offset,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Panggil function saat halaman selesai dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    aktifkanScrollHalaman();
+});
