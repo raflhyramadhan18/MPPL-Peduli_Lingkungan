@@ -47,7 +47,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <h1>Selamat Datang di EcoComplaint</h1>
-                    <p>Platform pengaduan lingkungan yang memudahkan Anda melaporkan masalah lingkungan di sekitar Anda. Bersama kita wujudkan bumi yang lebih hijau dan bersih.</p>
+                    <p>Platform pengaduan lingkungan yang memudahkan masyarakat melaporkan masalah di lingkungan sekitar. Bersama kita wujudkan bumi yang lebih hijau dan bersih.</p>
                     <button class="btn btn-primary btn-lg" onclick="window.location.href='index.php'">Laporkan Sekarang</button>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                             <i class="fas fa-camera"></i>
                         </div>
                         <h3>Unggah Foto</h3>
-                        <p>Sertakan foto sebagai bukti visual untuk memperkuat laporan pengaduan lingkungan Anda.</p>
+                        <p>Sertakan foto sebagai bukti visual untuk memperkuat laporan pengaduan lingkungan.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -106,7 +106,7 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3>Pantau Status</h3>
-                        <p>Pantau perkembangan laporan Anda dari mulai diajukan hingga proses penanganan selesai.</p>
+                        <p>Pantau perkembangan laporan dari mulai diajukan hingga proses penanganan selesai.</p>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Cara Kerja</h2>
-                <p>Hanya dengan 4 langkah mudah, Anda dapat berkontribusi melestarikan lingkungan</p>
+                <p>Hanya dengan 4 langkah mudah untuk dapat berkontribusi melestarikan lingkungan</p>
             </div>
             <div class="process-container">
                 <div class="process-connector d-none d-lg-block"></div>
@@ -130,7 +130,7 @@
                             </div>
                             <div class="step-content">
                                 <h3>Daftar Akun</h3>
-                                <p>Buat akun dengan mudah menggunakan email atau media sosial Anda.</p>
+                                <p>Buat akun dengan mudah menggunakan email atau akun google.</p>
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                             </div>
                             <div class="step-content">
                                 <h3>Verifikasi</h3>
-                                <p>Tim kami akan memverifikasi dan mengkategorikan laporan Anda.</p>
+                                <p>Tim kami akan memverifikasi dan mengkategorikan laporan.</p>
                             </div>
                         </div>
                     </div>
