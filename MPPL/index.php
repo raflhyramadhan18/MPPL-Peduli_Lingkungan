@@ -19,10 +19,12 @@
       justify-content: center;
       align-items: center;
     }
+
     .hero-card {
       background: white;
       border-radius: 20px;
-      padding: 40px;
+      margin-top: 20px;
+      padding: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       max-width: 600px;
       width: 90%;
@@ -36,8 +38,8 @@
 
 <body>
 
-  <div class="hero-card text-center">
-    <img src="assets/img/logo.png" alt="Logo" width="100" class="mb-3">
+  <div class="hero-card text-center m">
+    <img src="assets/img/logo.png" alt="Logo" width="200" >
     <h1 class="fw-bold text-success mb-3">🌿 Sistem Pengaduan Lingkungan</h1>
     <p class="text-muted mb-4">
       Laporkan permasalahan lingkungan di sekitar Anda secara cepat dan mudah.
@@ -59,7 +61,7 @@
     </a>
   </div>
 
-  <footer class="text-center text-muted mt-5 small">
+  <footer class="text-center text-muted mt-4 small">
     &copy; <?= date("Y") ?> Sistem Pengaduan Lingkungan — Kelompok MPPL
   </footer>
 
