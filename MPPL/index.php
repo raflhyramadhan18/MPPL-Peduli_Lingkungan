@@ -46,17 +46,17 @@
     </p>
 
     <div class="d-flex justify-content-center gap-3 mb-3">
-      <a href="auth/login.php" class="btn btn-success btn-lg">
+      <a href="Akses/login.php" class="btn btn-success btn-lg">
         <i class="bi bi-box-arrow-in-right"></i> Login
       </a>
-      <a href="auth/register.php" class="btn btn-outline-success btn-lg">
+      <a href="Akses/register.php" class="btn btn-outline-success btn-lg">
         <i class="bi bi-person-plus"></i> Register
       </a>
     </div>
 
     <hr class="my-4">
 
-    <a href="admin/dashboard.php" class="btn btn-warning">
+    <a href="admin_dashboard/dashboard.php" class="btn btn-warning">
       <i class="bi bi-speedometer2"></i> Masuk Dashboard Admin (Demo)
     </a>
   </div>
