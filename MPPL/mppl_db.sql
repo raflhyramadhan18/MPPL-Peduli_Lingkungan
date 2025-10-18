@@ -27,6 +27,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `users`
 --
 
+-- Buat database kalau belum ada
+CREATE DATABASE IF NOT EXISTS mppl_db;
+USE mppl_db;
+
 CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
   `username` varchar(50) NOT NULL,
