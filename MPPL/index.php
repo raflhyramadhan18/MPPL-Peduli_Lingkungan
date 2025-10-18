@@ -40,7 +40,7 @@
 
   <div class="hero-card text-center m">
     <img src="assets/img/logo.png" alt="Logo" width="200" >
-    <h1 class="fw-bold text-success mb-3">🌿 Sistem Pengaduan Lingkungan</h1>
+    <h1 class="fw-bold text-success mb-3">Sistem Pengaduan Lingkungan</h1>
     <p class="text-muted mb-4">
       Laporkan permasalahan lingkungan di sekitar Anda secara cepat dan mudah.
     </p>
