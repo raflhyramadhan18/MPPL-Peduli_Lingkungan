@@ -1,5 +1,68 @@
+<?php
+session_start();
+require '../Akses/auth_check.php';
+require '../Akses/config.php';
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+  header("Location: ../User/dashboard_user.php");
+  exit;
+}
+
+$total_pengaduan = 0;
+$pengaduan_proses = 0;
+$pengaduan_selesai = 0;
+$laporan_terbaru = [];
+
+try {
+  $stmt_stats = $pdo->prepare("SELECT 
+        COUNT(id) AS total,
+        COUNT(CASE WHEN status IN ('baru', 'menunggu', 'proses') THEN 1 END) AS proses,
+        COUNT(CASE WHEN status = 'selesai' THEN 1 END) AS selesai
+        FROM pengaduan");
+
+  $stmt_stats->execute();
+  $stats = $stmt_stats->fetch(PDO::FETCH_ASSOC);
+
+  if ($stats) {
+    $total_pengaduan = $stats['total'];
+    $pengaduan_proses = $stats['proses'];
+    $pengaduan_selesai = $stats['selesai'];
+  }
+
+  $stmt_recent = $pdo->prepare("SELECT 
+        p.id, 
+        p.jenis_pencemaran AS judul, 
+        p.created_at AS tanggal, 
+        p.status,
+        p.pelapor_username AS nama_pelapor 
+        FROM pengaduan p
+        ORDER BY p.created_at DESC 
+        LIMIT 5");
+
+  $stmt_recent->execute();
+  $laporan_terbaru = $stmt_recent->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+  $error = "Gagal mengambil data: " . $e->getMessage();
+}
+
+function get_status_class($status)
+{
+  switch (strtolower($status)) {
+    case 'selesai':
+      return 'bg-success';
+    case 'proses':
+    case 'menunggu':
+    case 'baru':
+      return 'bg-info text-dark';
+    default:
+      return 'bg-warning text-dark';
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,16 +77,19 @@
     body {
       background-color: #f8f9fa;
     }
+
     .card {
       border: none;
       border-radius: 12px;
     }
+
     .card:hover {
       transform: scale(1.02);
       transition: 0.2s;
     }
   </style>
 </head>
+
 <body>
 
   <!-- ✅ Navbar -->
@@ -40,7 +106,7 @@
           <li class="nav-item"><a class="nav-link active" href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="data_pengaduan.php"><i class="bi bi-clipboard-data"></i> Pengaduan</a></li>
           <li class="nav-item"><a class="nav-link" href="data_user.php"><i class="bi bi-people"></i> User</a></li>
-          <li class="nav-item"><a class="nav-link text-warning" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+          <li class="nav-item"><a class="nav-link text-warning" href="../Akses/logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
         </ul>
       </div>
     </div>
@@ -57,7 +123,7 @@
           <div class="card-body">
             <i class="bi bi-clipboard-data text-success" style="font-size: 2.5rem;"></i>
             <h5 class="mt-3">Total Pengaduan</h5>
-            <h3 id="total-pengaduan" class="fw-bold text-dark">0</h3>
+            <h3 id="total-pengaduan" class="fw-bold text-dark"><?= $total_pengaduan ?></h3>
           </div>
         </div>
       </div>
@@ -67,7 +133,7 @@
           <div class="card-body">
             <i class="bi bi-hourglass-split text-info" style="font-size: 2.5rem;"></i>
             <h5 class="mt-3">Sedang Diproses</h5>
-            <h3 id="pengaduan-proses" class="fw-bold text-dark">0</h3>
+            <h3 id="pengaduan-proses" class="fw-bold text-dark"><?= $pengaduan_proses ?></h3>
           </div>
         </div>
       </div>
@@ -77,7 +143,7 @@
           <div class="card-body">
             <i class="bi bi-check-circle text-success" style="font-size: 2.5rem;"></i>
             <h5 class="mt-3">Selesai</h5>
-            <h3 id="pengaduan-selesai" class="fw-bold text-dark">0</h3>
+            <h3 id="pengaduan-selesai" class="fw-bold text-dark"><?= $pengaduan_selesai ?></h3>
           </div>
         </div>
       </div>
@@ -101,56 +167,37 @@
             </tr>
           </thead>
           <tbody id="tabel-pengaduan">
-            <tr>
-              <td colspan="6" class="text-center text-muted">Memuat data...</td>
-            </tr>
+            <?php if (!empty($laporan_terbaru)): ?>
+              <?php $no = 1;
+              foreach ($laporan_terbaru as $p): ?>
+                <tr>
+                  <td><?= $no++ ?></td>
+                  <td><?= htmlspecialchars($p['judul']) ?></td>
+                  <td><?= htmlspecialchars($p['nama_pelapor']) ?></td>
+                  <td><?= date('Y-m-d', strtotime($p['tanggal'])) ?></td>
+                  <td>
+                    <span class="badge <?= get_status_class($p['status']) ?>">
+                      <?= htmlspecialchars(ucfirst($p['status'])) ?>
+                    </span>
+                  </td>
+                  <td>
+                    <a href="detail_pengaduan.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-success">
+                      <i class="bi bi-eye"></i> Detail
+                    </a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="6" class="text-center text-muted">Tidak ada pengaduan terbaru.</td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Script Dummy -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Data Dummy
-      const data = [
-        { id: 1, judul: "Sampah di Sungai", nama: "Rizki Santoso", tanggal: "2025-10-12", status: "proses" },
-        { id: 2, judul: "Pohon Tumbang", nama: "Siti Aulia", tanggal: "2025-10-11", status: "selesai" },
-        { id: 3, judul: "Saluran Air Tersumbat", nama: "Budi Hartono", tanggal: "2025-10-10", status: "menunggu" },
-      ];
-
-      // Hitung Statistik
-      document.getElementById("total-pengaduan").innerText = data.length;
-      document.getElementById("pengaduan-proses").innerText = data.filter(d => d.status === "proses").length;
-      document.getElementById("pengaduan-selesai").innerText = data.filter(d => d.status === "selesai").length;
-
-      // Isi Tabel
-      const tbody = document.getElementById("tabel-pengaduan");
-      tbody.innerHTML = "";
-      data.forEach((d, i) => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${i + 1}</td>
-            <td>${d.judul}</td>
-            <td>${d.nama}</td>
-            <td>${d.tanggal}</td>
-            <td>
-              <span class="badge ${
-                d.status === 'selesai' ? 'bg-success' :
-                d.status === 'proses' ? 'bg-info' : 'bg-warning text-dark'
-              }">${d.status}</span>
-            </td>
-            <td>
-              <a href="detail_pengaduan.php?id=${d.id}" class="btn btn-sm btn-outline-success">
-                <i class="bi bi-eye"></i> Detail
-              </a>
-            </td>
-          </tr>
-        `;
-      });
-    });
-  </script>
-
 </body>
+
 </html>
