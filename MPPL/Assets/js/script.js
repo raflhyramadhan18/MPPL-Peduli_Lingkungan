@@ -37,9 +37,9 @@ overlay?.addEventListener('click', () => {
 
 window.addEventListener('resize', () => {
     if (window.innerWidth >= 768) {
-        
+
         overlay?.classList.add('hidden');
-        
+
         const isClosed = sidebar?.classList.contains('sidebar-closed') ?? false;
         updateMainContentMargin(isClosed);
     } else {
@@ -58,7 +58,7 @@ function konfirmasiLogout() {
         logoutBtn.addEventListener("click", (e) => {
 
             if (!confirm("Apakah Anda yakin ingin keluar (logout) dari akun Anda?")) {
-                e.preventDefault(); 
+                e.preventDefault();
             }
         });
     } else {
@@ -125,7 +125,7 @@ function aktifkanScrollHalaman(offset = 80) {
 
             const elemenTarget = document.querySelector(idTarget);
             if (elemenTarget) {
-              
+
                 window.scrollTo({
                     top: elemenTarget.offsetTop - offset,
                     behavior: 'smooth'
@@ -144,7 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     konfirmasiLogout();
     setDailyTip();
-    inputAktif(); 
-    intiPassword(); 
-    aktifkanScrollHalaman(); 
+    inputAktif();
+    intiPassword();
+    aktifkanScrollHalaman();
+
 });

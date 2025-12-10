@@ -57,7 +57,7 @@
     <hr class="my-4">
 
     <a href="admin_dashboard/dashboard.php" class="btn btn-warning">
-      <i class="bi bi-speedometer2"></i> Masuk Dashboard Admin (Demo)
+      <i class="bi bi-speedometer2"></i> Masuk Dashboard Admin
     </a>
   </div>
 

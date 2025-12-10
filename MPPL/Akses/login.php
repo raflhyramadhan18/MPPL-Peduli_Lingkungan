@@ -1,27 +1,32 @@
 <?php
 session_start();
-require 'config.php'; 
+require 'config.php';
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+  $username = trim($_POST['username']);
+  $password = trim($_POST['password']);
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
+  $stmt = $pdo->prepare("SELECT username, password, role FROM users WHERE username = ?");
+  $stmt->execute([$username]);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['username'] = $user['username'];
-        header("Location: ../User/dashboard_user.php");
-        exit;
+  if ($user && password_verify($password, $user['password'])) {
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['role'] = $user['role'];
+
+    if ($user['role'] === 'admin') {
+      header("Location: ../admin_dashboard/dashboard.php");
     } else {
-        $error = "Username atau password salah!";
+      header("Location: ../User/dashboard_user.php");
     }
+    exit;
+  } else {
+    $error = "Username atau password salah!";
+  }
 }
 
-// *** PERHATIAN: PENGHAPUSAN SESSION DILAKUKAN DI SINI SETELAH LOGIKA POST ***
 $flash_status = $_SESSION['flash_status'] ?? null;
 $flash_message = $_SESSION['flash_message'] ?? null;
 unset($_SESSION['flash_status']);

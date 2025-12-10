@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2025 at 12:34 PM
+-- Generation Time: Dec 10, 2025 at 04:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,18 +24,41 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pengaduan`
+--
+
+CREATE TABLE `pengaduan` (
+  `id` int(11) NOT NULL,
+  `pelapor_username` varchar(50) NOT NULL,
+  `jenis_pencemaran` varchar(100) NOT NULL,
+  `lokasi` text NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `bukti_gambar_path` varchar(255) DEFAULT NULL,
+  `status` enum('baru','proses','selesai') NOT NULL DEFAULT 'baru',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pengaduan`
+--
+
+INSERT INTO `pengaduan` (`id`, `pelapor_username`, `jenis_pencemaran`, `lokasi`, `keterangan`, `bukti_gambar_path`, `status`, `created_at`, `updated_at`) VALUES
+(9, 'Samsudins', 'polusi_udara', 'asdasdsa', 'asdasdasdas', 'bukti_693996093e565.jpg', 'selesai', '2025-12-10 15:47:21', '2025-12-10 15:48:27');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
--- Buat database kalau belum ada
-CREATE DATABASE IF NOT EXISTS mppl_db;
-USE mppl_db;
-
 CREATE TABLE `users` (
-  `id` int(11) UNSIGNED NOT NULL,
+  `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `telp` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('admin','user') NOT NULL DEFAULT 'user',
+  `role` enum('user','admin') NOT NULL DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -43,12 +66,20 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `role`, `created_at`) VALUES
-(1, 'Samsudin', '$2y$10$pWNFTQGuscoLDec/gH2iLO7egCQICaQecXNa2kPXKNP9eVoHiiM4W', 'user', '2025-10-15 01:03:48');
+INSERT INTO `users` (`id`, `username`, `email`, `telp`, `password`, `role`, `created_at`) VALUES
+(1, 'admin', '', '', '$2y$10$PVN9T3Vm/Xr6jhHv4HKlHehN1WHX7GohYSsFt1bk8ZbfQWvpPVP9C', 'admin', '2025-12-10 13:02:16'),
+(4, 'Samsudins', 'samsudinkeces@gmail.com', '081982667846', '$2y$10$9TuLa9scn2xi2ZqZJlppsufHaTvw0v4IxrYMzmkRX7Saq2FvCxmSm', 'user', '2025-12-10 14:30:48');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `pengaduan`
+--
+ALTER TABLE `pengaduan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pelapor_username` (`pelapor_username`);
 
 --
 -- Indexes for table `users`
@@ -62,10 +93,26 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `pengaduan`
+--
+ALTER TABLE `pengaduan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `pengaduan`
+--
+ALTER TABLE `pengaduan`
+  ADD CONSTRAINT `pengaduan_ibfk_1` FOREIGN KEY (`pelapor_username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
